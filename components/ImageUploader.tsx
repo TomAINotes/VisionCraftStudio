@@ -58,7 +58,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onFileUpload, title, subt
     e.stopPropagation();
     setIsDragging(false);
     handleFileChange(e.dataTransfer.files);
-  }, []);
+  }, [handleFileChange]);
 
   return (
     <div className="w-full">

@@ -33,17 +33,9 @@ const VideoGenerator: React.FC<VideoGeneratorProps> = ({ resetKeySelection }) =>
     }, [isLoading]);
 
     const handleFileUpload = (fileData: ImageFile) => {
-        try {
-            setSourceImage(fileData);
-            setGeneratedVideoUrl(null);
-            setError(null);
-            setPrompt('');
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error handling file upload:', error);
-            setError('Failed to process the uploaded image. Please try again.');
-            setSourceImage(null);
-        }
+        setSourceImage(fileData);
+        setGeneratedVideoUrl(null);
+        setError(null);
     };
     
     const handleProgress = (message: string) => {
