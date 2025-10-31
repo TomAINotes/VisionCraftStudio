@@ -1,0 +1,5 @@
+{
+  "name": "VisionCraft Studio",
+  "description": "An AI-powered creative suite to generate stunning product marketing images, edit photos with text prompts, and create videos from still images using Google's Gemini and Veo models.",
+  "requestFramePermissions": []
+}
