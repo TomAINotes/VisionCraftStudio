@@ -13,9 +13,16 @@ const ImageEditor: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const handleFileUpload = (fileData: ImageFile) => {
-        setSourceImage(fileData);
-        setGeneratedImage(null);
-        setError(null);
+        try {
+            setSourceImage(fileData);
+            setGeneratedImage(null);
+            setError(null);
+            setPrompt('');
+        } catch (error) {
+            console.error('Error handling file upload:', error);
+            setError('Failed to process the uploaded image. Please try again.');
+            setSourceImage(null);
+        }
     };
 
     const handleGenerate = async () => {

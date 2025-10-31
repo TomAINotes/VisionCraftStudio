@@ -2,11 +2,41 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { ImageFile } from "../types";
 
-export const generateImageWithPrompt = async (imageFile: ImageFile, prompt: string, apiKey?: string): Promise<string> => {
-    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
-    if (!key) {
-        throw new Error("Gemini API key is required");
+declare global {
+    interface AIStudio {
+        getApiKey?: () => Promise<string | undefined>;
     }
+    interface Window {
+        aistudio?: AIStudio;
+    }
+}
+
+const getApiKey = async (providedKey?: string): Promise<string> => {
+    if (providedKey) {
+        return providedKey;
+    }
+
+    if (window.aistudio?.getApiKey) {
+        try {
+            const secretKey = await window.aistudio.getApiKey();
+            if (secretKey) {
+                return secretKey;
+            }
+        } catch (error) {
+            console.warn('Failed to retrieve API key from Secrets:', error);
+        }
+    }
+
+    const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (envKey && envKey !== 'your_gemini_api_key_here') {
+        return envKey;
+    }
+
+    throw new Error("Gemini API key is required. Please select an API key from the Secrets section or set VITE_GEMINI_API_KEY.");
+};
+
+export const generateImageWithPrompt = async (imageFile: ImageFile, prompt: string, apiKey?: string): Promise<string> => {
+    const key = await getApiKey(apiKey);
     const ai = new GoogleGenAI({ apiKey: key });
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -37,10 +67,7 @@ export const generateVideoFromImage = async (
     onProgress: (message: string) => void,
     apiKey?: string
 ): Promise<string> => {
-    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
-    if (!key) {
-        throw new Error("Gemini API key is required");
-    }
+    const key = await getApiKey(apiKey);
     const ai = new GoogleGenAI({ apiKey: key });
     onProgress("Starting video generation...");
     let operation = await ai.models.generateVideos({

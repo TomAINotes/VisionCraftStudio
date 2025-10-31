@@ -61,6 +61,7 @@ const ProductScenes: React.FC = () => {
     setSourceImage(fileData);
     setGeneratedImages([]);
     setError(null);
+    setProcessedImage(null);
     setLoadingMessage('Removing background...');
     setIsLoading(true);
     try {
@@ -70,6 +71,7 @@ const ProductScenes: React.FC = () => {
     } catch (e) {
       console.error(e);
       setError('Failed to process image. Please try again.');
+      setSourceImage(null);
     } finally {
       setIsLoading(false);
       setLoadingMessage('');
