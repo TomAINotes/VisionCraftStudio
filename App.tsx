@@ -15,13 +15,13 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'scenes':
-        return <ProductScenes />;
+        return <ApiKeySelector><ProductScenes /></ApiKeySelector>;
       case 'editor':
-        return <ImageEditor />;
+        return <ApiKeySelector><ImageEditor /></ApiKeySelector>;
       case 'video':
         return <ApiKeySelector><VideoGenerator /></ApiKeySelector>;
       default:
-        return <ProductScenes />;
+        return <ApiKeySelector><ProductScenes /></ApiKeySelector>;
     }
   };
 
