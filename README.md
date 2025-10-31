@@ -15,8 +15,8 @@ View your app in AI Studio: https://ai.studio/apps/drive/1CAKAy-ufCnWLOHs-NKqIJn
 
 1. Install dependencies:
    `npm install`
-2. Set the `VITE_GEMINI_API_KEY` in [.env](.env) to your Gemini API key
-   - Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
-   - Open the `.env` file and replace `your_gemini_api_key_here` with your actual API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
+3. When prompted in the app, select your API key using the built-in API key selector
+   - The app will use your secret Gemini API key managed through Google AI Studio
+   - No need to manually configure environment variables

@@ -3,7 +3,7 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import { ImageFile } from "../types";
 
 export const generateImageWithPrompt = async (imageFile: ImageFile, prompt: string, apiKey?: string): Promise<string> => {
-    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    const key = apiKey;
     if (!key) {
         throw new Error("Gemini API key is required");
     }
@@ -37,7 +37,7 @@ export const generateVideoFromImage = async (
     onProgress: (message: string) => void,
     apiKey?: string
 ): Promise<string> => {
-    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    const key = apiKey;
     if (!key) {
         throw new Error("Gemini API key is required");
     }
