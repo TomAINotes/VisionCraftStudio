@@ -2,9 +2,12 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { ImageFile } from "../types";
 
-export const generateImageWithPrompt = async (imageFile: ImageFile, prompt: string): Promise<string> => {
-    // FIX: Per guidelines, instantiate GoogleGenAI with process.env.API_KEY directly.
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+export const generateImageWithPrompt = async (imageFile: ImageFile, prompt: string, apiKey?: string): Promise<string> => {
+    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!key) {
+        throw new Error("Gemini API key is required");
+    }
+    const ai = new GoogleGenAI({ apiKey: key });
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
@@ -31,10 +34,14 @@ export const generateVideoFromImage = async (
     imageFile: ImageFile,
     prompt: string,
     aspectRatio: '16:9' | '9:16',
-    onProgress: (message: string) => void
+    onProgress: (message: string) => void,
+    apiKey?: string
 ): Promise<string> => {
-    // FIX: Per guidelines, instantiate GoogleGenAI with process.env.API_KEY directly.
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+    const key = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!key) {
+        throw new Error("Gemini API key is required");
+    }
+    const ai = new GoogleGenAI({ apiKey: key });
     onProgress("Starting video generation...");
     let operation = await ai.models.generateVideos({
         model: 'veo-3.1-fast-generate-preview',
@@ -70,8 +77,7 @@ export const generateVideoFromImage = async (
     }
     
     onProgress("Fetching generated video...");
-    // FIX: Per guidelines, use process.env.API_KEY directly.
-    const videoResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY!}`);
+    const videoResponse = await fetch(`${downloadLink}&key=${key}`);
     if (!videoResponse.ok) {
         throw new Error(`Failed to download video file. Status: ${videoResponse.statusText}`);
     }
